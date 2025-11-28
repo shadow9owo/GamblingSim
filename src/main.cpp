@@ -66,6 +66,13 @@ int main()
 	g_Camera.rotation = 0.0f;
 	g_Camera.zoom = 1.0f;
 
+	InitAudioDevice();
+
+	Render::Textures::Load();
+	Render::Sounds::Load();
+
+	Render::PrepUI();
+
     while (!WindowShouldClose() && !shouldclose)
     {
         BeginDrawing();
@@ -81,6 +88,11 @@ int main()
     }
 
 	SAVESYSTEM::SaveGame();
+
+	Render::Textures::Unload();
+	Render::Sounds::Unload();
+
+	CloseAudioDevice();
 
     CloseWindow();
     return 0;

@@ -4,6 +4,7 @@
 
 enum Locations
 {
+    L_INTRO,
     L_FACTORY,
     L_DOWNTOWN,
     L_BAR,
@@ -38,7 +39,7 @@ struct locationstate
 {
     bool visited = false;
     bool locked = false;
-    Locations location = L_FACTORY;
+    Locations location = L_INTRO;
 };
 
 class PlayerData
@@ -51,6 +52,7 @@ class PlayerData
         std::vector<Items> inventory;
         std::vector<locationstate> locations;
         Scenes currentscene = S_MAINMENU;
+        Locations currentlocation = L_INTRO;
 };
 
 extern PlayerData g_PlayerData;

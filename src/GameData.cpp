@@ -17,12 +17,14 @@ namespace SAVESYSTEM
         SetValue("debt", std::to_string(g_PlayerData.debt));
         SetValue("cash", std::to_string(g_PlayerData.cash));
 
+        SetValue("currentlocation", std::to_string((int)g_PlayerData.currentlocation));
+
         SetValue("inv_count", std::to_string(g_PlayerData.inventory.size()));
 
         for (size_t i = 0; i < g_PlayerData.inventory.size(); i++)
         {
             SetValue("inv_" + std::to_string(i),
-                     std::to_string((int)g_PlayerData.inventory[i]));
+                    std::to_string((int)g_PlayerData.inventory[i]));
         }
 
         SetValue("loc_count", std::to_string(g_PlayerData.locations.size()));
@@ -34,10 +36,8 @@ namespace SAVESYSTEM
             SetValue("loc_" + std::to_string(i) + "_v", L.visited ? "1" : "0");
             SetValue("loc_" + std::to_string(i) + "_l", L.locked ? "1" : "0");
             SetValue("loc_" + std::to_string(i) + "_t",
-                     std::to_string((int)L.location));
+                    std::to_string((int)L.location));
         }
-
-        SetValue("currentscene", std::to_string((int)g_PlayerData.currentscene));
     }
 
     void LoadGame()
@@ -49,33 +49,33 @@ namespace SAVESYSTEM
         g_PlayerData.debt = std::stoi(LoadValue("debt"));
         g_PlayerData.cash = std::stoi(LoadValue("cash"));
 
+        g_PlayerData.currentlocation =
+            (Locations)std::stoi(LoadValue("currentlocation", "0"));
+
         g_PlayerData.inventory.clear();
-        int inv_count = std::stoi(LoadValue("inv_count"));
+        int inv_count = std::stoi(LoadValue("inv_count", "0"));
 
         for (int i = 0; i < inv_count; i++)
         {
             std::string key = "inv_" + std::to_string(i);
             g_PlayerData.inventory.push_back(
-                (Items)std::stoi(LoadValue(key))
+                (Items)std::stoi(LoadValue(key, "0"))
             );
         }
 
         g_PlayerData.locations.clear();
-        int loc_count = std::stoi(LoadValue("loc_count"));
+        int loc_count = std::stoi(LoadValue("loc_count", "0"));
 
         for (int i = 0; i < loc_count; i++)
         {
             locationstate L;
-            L.visited  = (LoadValue("loc_" + std::to_string(i) + "_v") == "1");
-            L.locked   = (LoadValue("loc_" + std::to_string(i) + "_l") == "1");
+            L.visited  = (LoadValue("loc_" + std::to_string(i) + "_v", "0") == "1");
+            L.locked   = (LoadValue("loc_" + std::to_string(i) + "_l", "0") == "1");
             L.location = (Locations)std::stoi(
-                LoadValue("loc_" + std::to_string(i) + "_t")
+                LoadValue("loc_" + std::to_string(i) + "_t", "0")
             );
 
             g_PlayerData.locations.push_back(L);
         }
-
-        g_PlayerData.currentscene =
-            (Scenes)std::stoi(LoadValue("currentscene"));
     }
 }
