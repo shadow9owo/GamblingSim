@@ -11,6 +11,11 @@ namespace Render
         extern Texture T_DG;
         extern Texture T_Title;
 
+        extern Texture T_Map;
+        extern Texture T_Map_Overlay;
+
+        extern Texture T_Factory;
+
         extern void Load();
         extern void Unload();
     }

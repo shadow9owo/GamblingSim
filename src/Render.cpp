@@ -11,6 +11,9 @@
 #include "raymath.h"
 #include "GameData.hpp"
 
+#include "Utils.hpp"
+#include "Logger.hpp"
+
 namespace Render
 {
     namespace Textures
@@ -20,12 +23,20 @@ namespace Render
         Texture T_DG;
         Texture T_Title;
 
+        Texture T_Map;
+        Texture T_Map_Overlay;
+
+        Texture T_Factory;
+
         void Load()
         {
             T_mainmenu = LoadTexture("assets/menu.bmp");
             T_phone = LoadTexture("assets/phone.bmp");
             T_DG = LoadTexture("assets/dg.bmp");
             T_Title = LoadTexture("assets/title.bmp");
+            T_Factory = LoadTexture("assets/factory.bmp");
+            T_Map = LoadTexture("assets/map.bmp");
+            T_Map_Overlay = LoadTexture("assets/veryrealisticmap.bmp");
         }
 
         void Unload()
@@ -34,6 +45,9 @@ namespace Render
             UnloadTexture(T_phone);
             UnloadTexture(T_DG);
             UnloadTexture(T_Title);
+            UnloadTexture(T_Factory);
+            UnloadTexture(T_Map);
+            UnloadTexture(T_Map_Overlay);
         }
     }
 
@@ -67,12 +81,16 @@ namespace Render
         void Unload();
     }
 
+    bool mapisopen = false;
+
     bool rang = false;
     bool wif = false;
     bool lore = false;
 
     void RenderCurrentLocationUI()
     {
+        Vector2 mp = GetMousePosition();
+
         switch (g_PlayerData.currentlocation)
         {
             case L_INTRO:
@@ -123,6 +141,180 @@ namespace Render
 
         default:
             break;
+        }
+
+        Rectangle map_rec = {20,700,64,64};
+
+        if (g_PlayerData.currentlocation != L_INTRO)
+        {
+            if (!mapisopen)
+            {
+                DrawTexturePro(
+                    Textures::T_Map,
+                    {0,0,(float)Textures::T_Map.width,(float)Textures::T_Map.height},map_rec,{0,0},0,WHITE
+                );
+
+                switch (Utils::InvisibleButton(map_rec,"Map"))
+                {
+                    case Utils::Clicked:
+                    {
+                        mapisopen = true;
+                        break;
+                    }
+                    case Utils::Hovering:
+                    {
+                        DrawRectangle(mp.x,mp.y,MeasureText("open Map",24),24,YELLOW);
+                        DrawText("open Map",mp.x,mp.y,24,BLACK);
+                        break;
+                    }
+
+                default:
+                    break;
+                }
+            }else 
+            {
+                DrawTexturePro(
+                    Textures::T_Map_Overlay,
+                    {0,0,(float)Textures::T_Map_Overlay.width,(float)Textures::T_Map_Overlay.height},
+                    {0,0,(float)GetScreenWidth(),(float)GetScreenHeight()},
+                    {0,0},
+                    0,
+                    WHITE
+                );
+
+                Rectangle Kult = {21.000000,7.000000,29.000000,23.000000};
+
+                switch (Utils::InvisibleButton(Kult,""))
+                {
+                    case Utils::Clicked:
+                    {
+                        g_PlayerData.currentlocation = L_KULT;
+                        mapisopen = false;
+                        break;
+                    }
+                    case Utils::Hovering:
+                    {
+                        DrawRectangle(mp.x,mp.y,MeasureText("Go to Kult",24),24,YELLOW);
+                        DrawText("Go to Kult",mp.x,mp.y,24,BLACK);
+                        break;
+                    }
+
+                default:
+                    break;
+                }
+
+                Rectangle Factory = {134.000000,618.000000,5.000000,31.000000};
+
+                switch (Utils::InvisibleButton(Factory,""))
+                {
+                    case Utils::Clicked:
+                    {
+                        g_PlayerData.currentlocation = L_FACTORY;
+                        mapisopen = false;
+                        break;
+                    }
+                    case Utils::Hovering:
+                    {
+                        DrawRectangle(mp.x,mp.y,MeasureText("Go to work",24),24,YELLOW);
+                        DrawText("Go to work",mp.x,mp.y,24,BLACK);
+                        break;
+                    }
+
+                default:
+                    break;
+                }
+
+                Rectangle GamblingDen = {984.000000,204.000000,20.000000,13.000000};
+
+                switch (Utils::InvisibleButton(GamblingDen,""))
+                {
+                    case Utils::Clicked:
+                    {
+                        g_PlayerData.currentlocation = L_GAMBLING_DEN;
+                        mapisopen = false;
+                        break;
+                    }
+                    case Utils::Hovering:
+                    {
+                        DrawRectangle(mp.x,mp.y,MeasureText("Go to casino",24),24,YELLOW);
+                        DrawText("Go to casino",mp.x,mp.y,24,BLACK);
+                        break;
+                    }
+
+                default:
+                    break;
+                }
+
+                Rectangle AbandonedHouse = {469.000000,418.000000,22.000000,19.000000};
+
+                switch (Utils::InvisibleButton(AbandonedHouse,""))
+                {
+                    case Utils::Clicked:
+                    {
+                        g_PlayerData.currentlocation = L_ABANDONED_HOUSE;
+                        mapisopen = false;
+                        break;
+                    }
+                    case Utils::Hovering:
+                    {
+                        DrawRectangle(mp.x,mp.y,MeasureText("Go to abandoned house",24),24,YELLOW);
+                        DrawText("Go to abandoned house",mp.x,mp.y,24,BLACK);
+                        break;
+                    }
+
+                default:
+                    break;
+                }
+
+                Rectangle Bar = {842.000000,599.000000,26.000000,12.000000};
+
+                switch (Utils::InvisibleButton(Bar,""))
+                {
+                    case Utils::Clicked:
+                    {
+                        g_PlayerData.currentlocation = L_BAR;
+                        mapisopen = false;
+                        break;
+                    }
+                    case Utils::Hovering:
+                    {
+                        DrawRectangle(mp.x,mp.y,MeasureText("Go to Bar",24),24,YELLOW);
+                        DrawText("Go to Bar",mp.x,mp.y,24,BLACK);
+                        break;
+                    }
+
+                default:
+                    break;
+                }
+
+                Rectangle Alley = {1138.000000,673.000000,24.000000,17.000000};
+
+                switch (Utils::InvisibleButton(Alley,""))
+                {
+                    case Utils::Clicked:
+                    {
+                        g_PlayerData.currentlocation = L_ALLEY;
+                        mapisopen = false;
+                        break;
+                    }
+                    case Utils::Hovering:
+                    {
+                        DrawRectangle(mp.x,mp.y,MeasureText("Go to an alley",24),24,YELLOW);
+                        DrawText("Go to an alley",mp.x,mp.y,24,BLACK);
+                        break;
+                    }
+
+                default:
+                    break;
+                }
+
+                Rectangle Back = {GetScreenWidth() - 100,740,80,40};
+
+                if (GuiButton(Back,"Back"))
+                {
+                    mapisopen = false;
+                }
+            }
         }
         return;
     }
@@ -176,6 +368,8 @@ namespace Render
             }
             case L_FACTORY:
             {
+                auto pos = GetScreenToWorld2D({0,0},g_Camera);
+                DrawTexturePro(Textures::T_Factory,{0,0,(float)Textures::T_Factory.width,(float)Textures::T_Factory.height},{pos.x,pos.y,(float)GetScreenWidth(),(float)GetScreenHeight()},{0,0},0,WHITE);
                 break;
             }
             case L_KULT:

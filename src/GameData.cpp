@@ -1,10 +1,15 @@
 #include "GameData.hpp"
 #include <vector>
 #include "STD.hpp"
+#include "raylib.h"
 
 PlayerData g_PlayerData;
 
 bool shouldclose = false;
+
+bool debug = false;
+
+std::vector<Vector2> placementbuffer;
 
 namespace SAVESYSTEM
 {

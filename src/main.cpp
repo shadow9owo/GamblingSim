@@ -7,6 +7,12 @@
 #include "main.hpp"
 #include "Render.hpp"
 
+#include "Logger.hpp"
+
+#include "Utils.hpp"
+
+#include "Input.hpp"
+
 Camera2D g_Camera = { 0 };
 
 unsigned int Warning()
@@ -55,6 +61,8 @@ int main()
 		g_PlayerData.sawWarning = true;
 	}
 
+	debug = true;
+
     SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
     InitWindow(1280, 800, " ");
 	SetTargetFPS(24);
@@ -84,6 +92,16 @@ int main()
 		EndMode2D();
 
 		Render::RenderUI();
+
+		if (debug)
+		{
+			Logger::RenderLogger();
+
+			Utils::RenderMousePos();
+		}
+
+		Input::DoInput();
+
         EndDrawing();
     }
 

@@ -1,17 +1,18 @@
 #pragma once
 
 #include <vector>
+#include "raylib.h"
 
 enum Locations
 {
     L_INTRO,
-    L_FACTORY,
-    L_DOWNTOWN,
-    L_BAR,
-    L_ALLEY,
-    L_ABANDONED_HOUSE,
-    L_GAMBLING_DEN,
-    L_KULT,
+    L_FACTORY, //done 
+    L_DOWNTOWN, //done
+    L_BAR, //done
+    L_ALLEY, //done
+    L_ABANDONED_HOUSE, //done
+    L_GAMBLING_DEN, //done
+    L_KULT, 
     L_DISCORD_MOD_EASTEREGG
 };
 
@@ -56,6 +57,10 @@ class PlayerData
 };
 
 extern PlayerData g_PlayerData;
+
+extern bool debug;
+
+extern std::vector<Vector2> placementbuffer;
 
 extern bool shouldclose;
 
