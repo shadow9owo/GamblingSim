@@ -3,6 +3,7 @@
 #include "raylib.h"
 #include <string>
 #include "Utils.hpp"
+#include "Logger.hpp"
 
 namespace Input
 {
@@ -28,6 +29,17 @@ namespace Input
 
                 SetClipboardText(result.c_str());          
             }
+        }
+
+        if (IsKeyPressed(KEY_F2))
+        {
+            Logger::Log("quick saved!");
+            SAVESYSTEM::SaveGame();
+        }
+        else if (IsKeyPressed(KEY_F3))
+        {
+            Logger::Log("quick loaded!");
+            SAVESYSTEM::LoadGame();
         }
     }
 }

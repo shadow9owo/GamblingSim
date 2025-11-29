@@ -26,7 +26,18 @@ namespace Render
         Texture T_Map;
         Texture T_Map_Overlay;
 
+        Texture T_scientologyhq;
+        Texture T_standing_female_1;
+        Texture T_standing_male_1;
+        Texture T_standing_male_2;
+        Texture T_standing_male_3;
+
+        Texture T_casino;
+        Texture T_alley;
+        Texture T_abandonedhouse;
+
         Texture T_Factory;
+        Texture T_Home;
 
         void Load()
         {
@@ -37,6 +48,18 @@ namespace Render
             T_Factory = LoadTexture("assets/factory.bmp");
             T_Map = LoadTexture("assets/map.bmp");
             T_Map_Overlay = LoadTexture("assets/veryrealisticmap.bmp");
+
+            T_scientologyhq = LoadTexture("assets/scientologyhq.bmp");
+            T_alley = LoadTexture("assets/alley.bmp");
+            T_casino = LoadTexture("assets/casino.bmp");
+            T_abandonedhouse = LoadTexture("assets/abandonedhouse.bmp");
+
+            T_standing_male_1 = LoadTexture("assets/standingmale1.bmp");
+            T_standing_male_2 = LoadTexture("assets/standingmale2.bmp");
+            T_standing_male_3 = LoadTexture("assets/standingmale3.bmp");
+            T_standing_female_1 = LoadTexture("assets/standingfemale1.bmp");
+
+            T_Home = LoadTexture("assets/bar.bmp");
         }
 
         void Unload()
@@ -45,9 +68,19 @@ namespace Render
             UnloadTexture(T_phone);
             UnloadTexture(T_DG);
             UnloadTexture(T_Title);
-            UnloadTexture(T_Factory);
             UnloadTexture(T_Map);
             UnloadTexture(T_Map_Overlay);
+
+            UnloadTexture(T_scientologyhq);
+            UnloadTexture(T_Factory);
+            UnloadTexture(T_alley);
+            UnloadTexture(T_casino);
+            UnloadTexture(T_abandonedhouse);
+
+            UnloadTexture(T_standing_male_1);
+            UnloadTexture(T_standing_male_2);
+            UnloadTexture(T_standing_male_3);
+            UnloadTexture(T_standing_female_1);
         }
     }
 
@@ -278,8 +311,8 @@ namespace Render
                     }
                     case Utils::Hovering:
                     {
-                        DrawRectangle(mp.x,mp.y,MeasureText("Go to Bar",24),24,YELLOW);
-                        DrawText("Go to Bar",mp.x,mp.y,24,BLACK);
+                        DrawRectangle(mp.x,mp.y,MeasureText("Go Home",24),24,YELLOW);
+                        DrawText("Go Home",mp.x,mp.y,24,BLACK);
                         break;
                     }
 
@@ -348,14 +381,20 @@ namespace Render
             }
             case L_ABANDONED_HOUSE:
             {
+                auto pos = GetScreenToWorld2D({0,0},g_Camera);
+                DrawTexturePro(Textures::T_abandonedhouse,{0,0,(float)Textures::T_abandonedhouse.width,(float)Textures::T_abandonedhouse.height},{pos.x,pos.y,(float)GetScreenWidth(),(float)GetScreenHeight()},{0,0},0,WHITE);
                 break;
             }
             case L_ALLEY:
             {
+                auto pos = GetScreenToWorld2D({0,0},g_Camera);
+                DrawTexturePro(Textures::T_alley,{0,0,(float)Textures::T_alley.width,(float)Textures::T_alley.height},{pos.x,pos.y,(float)GetScreenWidth(),(float)GetScreenHeight()},{0,0},0,WHITE);
                 break;
             }
             case L_BAR:
             {
+                auto pos = GetScreenToWorld2D({0,0},g_Camera);
+                DrawTexturePro(Textures::T_Home,{0,0,(float)Textures::T_Home.width,(float)Textures::T_Home.height},{pos.x,pos.y,(float)GetScreenWidth(),(float)GetScreenHeight()},{0,0},0,WHITE);
                 break;
             }
             case L_DISCORD_MOD_EASTEREGG:
@@ -374,6 +413,14 @@ namespace Render
             }
             case L_KULT:
             {
+                auto pos = GetScreenToWorld2D({0,0},g_Camera);
+                DrawTexturePro(Textures::T_scientologyhq,{0,0,(float)Textures::T_scientologyhq.width,(float)Textures::T_scientologyhq.height},{pos.x,pos.y,(float)GetScreenWidth(),(float)GetScreenHeight()},{0,0},0,WHITE);
+                break;
+            }
+            case L_GAMBLING_DEN:
+            {
+                auto pos = GetScreenToWorld2D({0,0},g_Camera);
+                DrawTexturePro(Textures::T_casino,{0,0,(float)Textures::T_casino.width,(float)Textures::T_casino.height},{pos.x,pos.y,(float)GetScreenWidth(),(float)GetScreenHeight()},{0,0},0,WHITE);
                 break;
             }
 

@@ -14,6 +14,21 @@ namespace Render
         extern Texture T_Map;
         extern Texture T_Map_Overlay;
 
+        extern Texture T_Map;
+        extern Texture T_Map_Overlay;
+
+        extern Texture T_scientologyhq;
+        extern Texture T_standing_female_1;
+        extern Texture T_standing_male_1;
+        extern Texture T_standing_male_2;
+        extern Texture T_standing_male_3;
+
+        extern Texture T_casino;
+        extern Texture T_alley;
+        extern Texture T_abandonedhouse;
+
+        extern Texture T_Home;
+
         extern Texture T_Factory;
 
         extern void Load();
