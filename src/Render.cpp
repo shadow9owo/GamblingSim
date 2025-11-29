@@ -14,6 +14,8 @@
 #include "Utils.hpp"
 #include "Logger.hpp"
 
+#include "MiniGames.hpp"
+
 namespace Render
 {
     namespace Textures
@@ -39,6 +41,32 @@ namespace Render
         Texture T_Factory;
         Texture T_Home;
 
+        Texture T_Slots1;
+        Texture T_Slots2;
+
+        Texture T_Factory_Background;
+
+        Texture T_Box;
+
+        Texture T_scientologist;
+
+        Texture T_basement;
+
+        Texture T_knife;
+
+        Texture T_table;
+
+        Texture T_baggie;
+
+        Texture T_heroine;
+
+        Texture T_cop1;
+        Texture T_cop2;
+        Texture T_cop3;
+        Texture T_cop4;
+
+        Texture T_gunviewmodel;
+
         void Load()
         {
             T_mainmenu = LoadTexture("assets/menu.bmp");
@@ -60,6 +88,32 @@ namespace Render
             T_standing_female_1 = LoadTexture("assets/standingfemale1.bmp");
 
             T_Home = LoadTexture("assets/bar.bmp");
+
+            T_Slots1 = LoadTexture("assets/slots1.bmp");
+            T_Slots2 = LoadTexture("assets/slots2.bmp");
+
+            T_Box = LoadTexture("assets/box.bmp");
+            T_Factory_Background = LoadTexture("assets/factory_background.bmp");
+
+            T_basement = LoadTexture("assets/basement.bmp"); 
+
+            T_scientologist = LoadTexture("assets/scientologist.bmp");
+
+            T_knife = LoadTexture("assets/knive.bmp");
+
+            T_table = LoadTexture("assets/table.bmp");
+
+            T_baggie = LoadTexture("assets/baggie.bmp");
+            T_heroine = LoadTexture("assets/heroine.bmp");
+
+            T_cop1 = LoadTexture("assets/cop1.bmp");
+
+            //aim down
+            T_cop2 = LoadTexture("assets/cop2.bmp");
+            T_cop3 = LoadTexture("assets/cop3.bmp");
+            T_cop4 = LoadTexture("assets/cop4.bmp");
+
+            T_gunviewmodel = LoadTexture("assets/gunviewmodel.bmp");
         }
 
         void Unload()
@@ -81,6 +135,24 @@ namespace Render
             UnloadTexture(T_standing_male_2);
             UnloadTexture(T_standing_male_3);
             UnloadTexture(T_standing_female_1);
+
+            UnloadTexture(T_Box);
+            UnloadTexture(T_Factory_Background);
+
+            UnloadTexture(T_basement);
+            UnloadTexture(T_scientologist);
+            UnloadTexture(T_knife);
+
+            UnloadTexture(T_table);
+            UnloadTexture(T_heroine);
+            UnloadTexture(T_baggie);
+
+            UnloadTexture(T_cop1);
+            UnloadTexture(T_cop2);
+            UnloadTexture(T_cop3);
+            UnloadTexture(T_cop4);
+
+            UnloadTexture(T_gunviewmodel);
         }
     }
 
@@ -88,17 +160,38 @@ namespace Render
     {
         Sound Ring;
         Sound WifeDialogue;
+        Sound Gunshot;
+        Sound Gambaspin;
+        Sound plastic;
+        Sound female_pain;
+        Sound male_pain;
+        Sound stab;
+        Sound select;
 
         void Load()
         {
             Ring = LoadSound("assets/ring.mp3");
             WifeDialogue = LoadSound("assets/wifdialoguepeak.mp3");
+            Gunshot = LoadSound("assets/gunshot.wav");
+            Gambaspin = LoadSound("assets/spin.mp3");
+            plastic = LoadSound("assets/plastic.wav");
+            female_pain = LoadSound("assets/female_pain.mp3");
+            male_pain = LoadSound("assets/male_pain.wav");
+            stab = LoadSound("assets/knive.wav");
+            select = LoadSound("assets/select.wav");
         }
 
         void Unload()
         {
             UnloadSound(Ring);
             UnloadSound(WifeDialogue);
+            UnloadSound(Gunshot);
+            UnloadSound(Gambaspin);
+            UnloadSound(plastic);
+            UnloadSound(female_pain);
+            UnloadSound(male_pain);
+            UnloadSound(stab);
+            UnloadSound(select);
         }
     }
 
@@ -108,10 +201,24 @@ namespace Render
         void Unload();
     }
 
-    namespace Music
+    namespace _Music
     {
-        void Load();
-        void Unload();
+        Music menutheme;
+        Music gameambience;
+
+        void Load()
+        {
+            menutheme = LoadMusicStream("assets/menutheme.mp3");
+            gameambience = LoadMusicStream("assets/ambience.wav");
+            return;
+        }
+
+        void Unload()
+        {
+            UnloadMusicStream(menutheme);
+            UnloadMusicStream(gameambience);
+            return;
+        }
     }
 
     bool mapisopen = false;
@@ -138,6 +245,9 @@ namespace Render
                     );
                     if (IsKeyPressed(KEY_SPACE))
                     {
+                        g_PlayerData.health = 100;
+                        g_PlayerData.debt = 100000;
+                        g_PlayerData.cash = 50;
                         g_PlayerData.currentlocation = L_FACTORY;
                     }
                 }
@@ -191,6 +301,7 @@ namespace Render
                 {
                     case Utils::Clicked:
                     {
+                        Minigames::CurrentMinigame = Minigames::Minigames_e::_None;
                         mapisopen = true;
                         break;
                     }
@@ -244,6 +355,7 @@ namespace Render
                     {
                         g_PlayerData.currentlocation = L_FACTORY;
                         mapisopen = false;
+                        Minigames::Data::balllist = {};
                         break;
                     }
                     case Utils::Hovering:
@@ -385,12 +497,140 @@ namespace Render
             {
                 auto pos = GetScreenToWorld2D({0,0},g_Camera);
                 DrawTexturePro(Textures::T_abandonedhouse,{0,0,(float)Textures::T_abandonedhouse.width,(float)Textures::T_abandonedhouse.height},{pos.x,pos.y,(float)GetScreenWidth(),(float)GetScreenHeight()},{0,0},0,WHITE);
+                
+                Rectangle crackhead = {
+                    GetScreenToWorld2D({593.000000,372.000000}, g_Camera).x,
+                    GetScreenToWorld2D({593.000000,372.000000}, g_Camera).y,
+                    150.000000,300.000000
+                };
+
+                Rectangle entrance = {
+                    GetScreenToWorld2D({291.000000,360.000000}, g_Camera).x,
+                    GetScreenToWorld2D({291.000000,360.000000}, g_Camera).y,
+                    74.000000,171.000000
+                };
+
+                DrawTexturePro(
+                    Render::Textures::T_standing_male_2,
+                    {0,0,(float)Render::Textures::T_standing_male_2.width,(float)Render::Textures::T_standing_male_2.height},
+                    crackhead,
+                    {0,0},
+                    0,
+                    WHITE
+                );
+
+                auto a = GetScreenToWorld2D(mp,g_Camera);
+
+                if (!mapisopen && Minigames::CurrentMinigame == Minigames::Minigames_e::_None)
+                {
+                    switch (Utils::InvisibleButton(crackhead,a))
+                    {
+                        case Utils::Clicked:
+                        {
+                            Logger::Log("hey wanna help us package our drugs we need hand and i see youre in debt");
+                            Logger::Log("click on the door to start the job");
+                            break;
+                        }
+                        case Utils::Hovering:
+                        {
+                            DrawRectangle(a.x, a.y,
+                                          MeasureText("talk to the drug manifacturer",24), 24, YELLOW);
+                            DrawTextPro(
+                                GetFontDefault(),
+                                "talk to the drug manifacturer",
+                                {a.x,a.y},
+                                {0,0},
+                                0,
+                                24,
+                                0.5f,
+                                BLACK
+                            );
+                            break;
+                        }
+                    
+                        default:
+                            break;
+                    }
+
+                    switch (Utils::InvisibleButton(entrance,a))
+                    {
+                        case Utils::Clicked:
+                        {
+                            Minigames::CurrentMinigame = Minigames::Minigames_e::_Baggies_heroine;
+                            break;
+                        }
+                        case Utils::Hovering:
+                        {
+                            DrawRectangle(a.x, a.y,
+                                          MeasureText("start job",24), 24, YELLOW);
+                            DrawTextPro(
+                                GetFontDefault(),
+                                "start job",
+                                {a.x,a.y},
+                                {0,0},
+                                0,
+                                24,
+                                0.5f,
+                                BLACK
+                            );
+                            break;
+                        }
+                    
+                        default:
+                            break;
+                    }
+                }
+
                 break;
             }
             case L_ALLEY:
             {
                 auto pos = GetScreenToWorld2D({0,0},g_Camera);
                 DrawTexturePro(Textures::T_alley,{0,0,(float)Textures::T_alley.width,(float)Textures::T_alley.height},{pos.x,pos.y,(float)GetScreenWidth(),(float)GetScreenHeight()},{0,0},0,WHITE);
+                
+                auto a = GetScreenToWorld2D(mp,g_Camera);
+
+                Rectangle work = {
+                    GetScreenToWorld2D({767.000000,452.000000}, g_Camera).x,
+                    GetScreenToWorld2D({767.000000,452.000000}, g_Camera).y,
+                    217.000000,210.000000
+                };
+
+                if (!mapisopen && Minigames::CurrentMinigame == Minigames::Minigames_e::_None)
+                {
+                    DrawTexturePro(Render::Textures::T_cop1,
+                        {0,0,(float)Render::Textures::T_cop1.width,(float)Render::Textures::T_cop1.height},
+                        work,{0,0},0,WHITE);
+
+                    switch (Utils::InvisibleButton(work,a))
+                    {
+                        case Utils::Clicked:
+                        {
+                            Minigames::CurrentMinigame = Minigames::Minigames_e::_Shoot_cops;
+                            break;
+                        }
+                        case Utils::Hovering:
+                        {
+                            DrawRectangle(a.x, a.y,
+                                          MeasureText("Start heat streak",24), 24, YELLOW);
+                            DrawTextPro(
+                                GetFontDefault(),
+                                "Start heat streak",
+                                {a.x,a.y},
+                                {0,0},
+                                0,
+                                24,
+                                0.5f,
+                                BLACK
+                            );
+                            break;
+                        }
+                    
+                        default:
+                            break;
+                    }
+                }
+
                 break;
             }
             case L_BAR: //home
@@ -400,6 +640,21 @@ namespace Render
                     Textures::T_Home,
                     {0,0,(float)Textures::T_Home.width,(float)Textures::T_Home.height},
                     {pos.x,pos.y,(float)GetScreenWidth(),(float)GetScreenHeight()},
+                    {0,0},
+                    0,
+                    WHITE
+                );
+
+                Rectangle debtcollector = {
+                    GetScreenToWorld2D({206.000000,337.000000}, g_Camera).x,
+                    GetScreenToWorld2D({206.000000,337.000000}, g_Camera).y,
+                    200.000000,300.000000
+                };
+
+                DrawTexturePro(
+                    Render::Textures::T_standing_male_1,
+                    {0,0,(float)Render::Textures::T_standing_male_1.width,(float)Render::Textures::T_standing_male_1.height},
+                    debtcollector,
                     {0,0},
                     0,
                     WHITE
@@ -414,41 +669,76 @@ namespace Render
                 
                 auto a = GetScreenToWorld2D(mp,g_Camera);
 
-                switch (Utils::InvisibleButton(entrance,a))
+                if (!mapisopen)
                 {
-                    case Utils::Clicked:
+                    switch (Utils::InvisibleButton(entrance,a))
                     {
-                        if (g_PlayerData.debt <= 0)
+                        case Utils::Clicked:
                         {
-                            g_PlayerData = {};
-                            SAVESYSTEM::SaveGame();
-                            g_PlayerData.currentscene = S_CREDITS;    
+                            if (g_PlayerData.debt <= 0)
+                            {
+                                g_PlayerData = {};
+                                SAVESYSTEM::SaveGame();
+                                g_PlayerData.currentscene = S_CREDITS;    
+                            }
+                            else 
+                            {
+                                Logger::Log("you cant enter your home while still being in debt your wife would kill you.");
+                            }
+                            break;
                         }
-                        else 
+                        case Utils::Hovering:
                         {
-                            Logger::Log("you cant enter your home while still being in debt your wife would kill you.");
+                            DrawRectangle(a.x, a.y,
+                                          MeasureText("enter home",24), 24, YELLOW);
+                            DrawTextPro(
+                                GetFontDefault(),
+                                "enter home",
+                                {a.x,a.y},
+                                {0,0},
+                                0,
+                                24,
+                                0.5f,
+                                BLACK
+                            );
+                            break;
                         }
-                        break;
+                    
+                        default:
+                            break;
                     }
-                    case Utils::Hovering:
+
+                    switch (Utils::InvisibleButton(debtcollector,a))
                     {
-                        DrawRectangle(a.x, a.y,
-                                      MeasureText("enter home",24), 24, YELLOW);
-                        DrawTextPro(
-                            GetFontDefault(),
-                            "enter home",
-                            {a.x,a.y},
-                            {0,0},
-                            0,
-                            24,
-                            0.5f,
-                            BLACK
-                        );
-                        break;
+                        case Utils::Clicked:
+                        {
+                            if (g_PlayerData.cash > 0)
+                            {
+                                g_PlayerData.debt = g_PlayerData.debt - g_PlayerData.cash;
+                                g_PlayerData.cash = 0;
+                            }
+                            break;
+                        }
+                        case Utils::Hovering:
+                        {
+                            DrawRectangle(a.x, a.y,
+                                          MeasureText("pay back debt to the debt collector",24), 24, YELLOW);
+                            DrawTextPro(
+                                GetFontDefault(),
+                                "pay back debt to the debt collector",
+                                {a.x,a.y},
+                                {0,0},
+                                0,
+                                24,
+                                0.5f,
+                                BLACK
+                            );
+                            break;
+                        }
+                    
+                        default:
+                            break;
                     }
-                
-                    default:
-                        break;
                 }
             
                 break;
@@ -463,20 +753,192 @@ namespace Render
             }
             case L_FACTORY:
             {
+                auto a = GetScreenToWorld2D(mp,g_Camera);
+
                 auto pos = GetScreenToWorld2D({0,0},g_Camera);
                 DrawTexturePro(Textures::T_Factory,{0,0,(float)Textures::T_Factory.width,(float)Textures::T_Factory.height},{pos.x,pos.y,(float)GetScreenWidth(),(float)GetScreenHeight()},{0,0},0,WHITE);
+
+                Rectangle work = {
+                    GetScreenToWorld2D({767.000000,452.000000}, g_Camera).x,
+                    GetScreenToWorld2D({767.000000,452.000000}, g_Camera).y,
+                    217.000000,210.000000
+                };
+                if (!mapisopen)
+                {
+                    switch (Utils::InvisibleButton(work,a))
+                    {
+                        case Utils::Clicked:
+                        {
+                            Minigames::CurrentMinigame = Minigames::Minigames_e::_Work;
+                            break;
+                        }
+                        case Utils::Hovering:
+                        {
+                            DrawRectangle(a.x, a.y,
+                                          MeasureText("Work",24), 24, YELLOW);
+                            DrawTextPro(
+                                GetFontDefault(),
+                                "Work",
+                                {a.x,a.y},
+                                {0,0},
+                                0,
+                                24,
+                                0.5f,
+                                BLACK
+                            );
+                            break;
+                        }
+                    
+                        default:
+                            break;
+                    }
+                }
+
                 break;
             }
             case L_KULT:
             {
                 auto pos = GetScreenToWorld2D({0,0},g_Camera);
                 DrawTexturePro(Textures::T_scientologyhq,{0,0,(float)Textures::T_scientologyhq.width,(float)Textures::T_scientologyhq.height},{pos.x,pos.y,(float)GetScreenWidth(),(float)GetScreenHeight()},{0,0},0,WHITE);
+
+                auto a = GetScreenToWorld2D(mp,g_Camera);
+
+                Rectangle tommy = {
+                    GetScreenToWorld2D({141.000000,326.000000}, g_Camera).x,
+                    GetScreenToWorld2D({141.000000,326.000000}, g_Camera).y,
+                    216.000000,400.000000
+                };
+
+                Rectangle hqentrance = {
+                    GetScreenToWorld2D({515.000000,291.000000}, g_Camera).x,
+                    GetScreenToWorld2D({515.000000,291.000000}, g_Camera).y,
+                    187.000000,281.000000
+                };
+
+                DrawTexturePro(Textures::T_scientologist,{0,0,(float)Textures::T_scientologist.width,(float)Textures::T_scientologist.height},tommy,{0,0},0,WHITE);
+                
+                if (Minigames::CurrentMinigame == Minigames::Minigames_e::_None)
+                {
+                    if (!mapisopen)
+                    {
+                        switch (Utils::InvisibleButton(tommy,a))
+                        {
+                            case Utils::Clicked:
+                            {
+                                Logger::Log("some of our k.. club members have been disobeying the rules we would appreciate your help");
+                                Logger::Log("click on the door to start the job");
+                                break;
+                            }
+                            case Utils::Hovering:
+                            {
+                                DrawRectangle(a.x, a.y,
+                                              MeasureText("Talk to tommy",24), 24, YELLOW);
+                                DrawTextPro(
+                                    GetFontDefault(),
+                                    "Talk to tommy",
+                                    {a.x,a.y},
+                                    {0,0},
+                                    0,
+                                    24,
+                                    0.5f,
+                                    BLACK
+                                );
+                                break;
+                            }
+                        
+                            default:
+                                break;
+                        }
+                    }
+
+                    if (!mapisopen)
+                    {
+                        switch (Utils::InvisibleButton(hqentrance,a))
+                        {
+                            case Utils::Clicked:
+                            {
+                                Minigames::CurrentMinigame = Minigames::Minigames_e::_Whip_followers;
+                                break;
+                            }
+                            case Utils::Hovering:
+                            {
+                                DrawRectangle(a.x, a.y,
+                                              MeasureText("start job for mr tommy",24), 24, YELLOW);
+                                DrawTextPro(
+                                    GetFontDefault(),
+                                    "start job for mr tommy",
+                                    {a.x,a.y},
+                                    {0,0},
+                                    0,
+                                    24,
+                                    0.5f,
+                                    BLACK
+                                );
+                                break;
+                            }
+                        
+                            default:
+                                break;
+                        }
+                    }
+                }
+                
                 break;
             }
             case L_GAMBLING_DEN:
             {
                 auto pos = GetScreenToWorld2D({0,0},g_Camera);
                 DrawTexturePro(Textures::T_casino,{0,0,(float)Textures::T_casino.width,(float)Textures::T_casino.height},{pos.x,pos.y,(float)GetScreenWidth(),(float)GetScreenHeight()},{0,0},0,WHITE);
+
+                Rectangle entrance = {
+                    GetScreenToWorld2D({67.000000,226.000000}, g_Camera).x,
+                    GetScreenToWorld2D({67.000000,226.000000}, g_Camera).y,
+                    1096.000000,425.000000
+                };
+                
+                auto a = GetScreenToWorld2D(mp,g_Camera);
+
+                if (!mapisopen)
+                {
+                    if (Minigames::CurrentMinigame != Minigames::Minigames_e::_Slots)
+                    {
+                        switch (Utils::InvisibleButton(entrance,a))
+                        {
+                            case Utils::Clicked:
+                            {
+                                if (g_PlayerData.cash > 0)
+                                {
+                                    Minigames::CurrentMinigame = Minigames::Minigames_e::_Slots;
+                                }
+                                else 
+                                {
+                                    Logger::Log("you cant gamble without money.");
+                                }
+                                break;
+                            }
+                            case Utils::Hovering:
+                            {
+                                DrawRectangle(a.x, a.y,
+                                              MeasureText("Open slots UI",24), 24, YELLOW);
+                                DrawTextPro(
+                                    GetFontDefault(),
+                                    "Open slots UI",
+                                    {a.x,a.y},
+                                    {0,0},
+                                    0,
+                                    24,
+                                    0.5f,
+                                    BLACK
+                                );
+                                break;
+                            }
+                        
+                            default:
+                                break;
+                        }
+                    }
+                }
+
                 break;
             }
 
@@ -533,8 +995,69 @@ namespace Render
             case Scenes::S_GAME:
             {
                 RenderCurrentLocationUI();
+                if (g_PlayerData.currentlocation != L_INTRO)
+                {
+                DrawRectanglePro(
+                    {
+                        (float)GetScreenWidth() - (
+                            (float)std::max(
+                                MeasureText(("money : " + std::to_string(g_PlayerData.cash) + "$").c_str(), 24),
+                                MeasureText(("debt : " + std::to_string(g_PlayerData.debt) + "$").c_str(), 24)
+                            ) + 40
+                        ),
+                        20,
+                        (float)std::max(
+                            MeasureText(("money : " + std::to_string(g_PlayerData.cash) + "$").c_str(), 24),
+                            MeasureText(("debt : " + std::to_string(g_PlayerData.debt) + "$").c_str(), 24)
+                        ) + 40,
+                        60
+                    },
+                    {0,0},
+                    0,
+                    BLACK
+                );
+            
+                DrawTextPro(
+                    GetFontDefault(),
+                    ("money : " + std::to_string(g_PlayerData.cash) + "$").c_str(),
+                    {
+                        (float)GetScreenWidth() - (
+                            (float)std::max(
+                                MeasureText(("money : " + std::to_string(g_PlayerData.cash) + "$").c_str(), 24),
+                                MeasureText(("debt : " + std::to_string(g_PlayerData.debt) + "$").c_str(), 24)
+                            ) + 20
+                        ),
+                        24
+                    },
+                    {0,0},
+                    0,
+                    24,
+                    0.5f,
+                    WHITE
+                );
+            
+                DrawTextPro(
+                    GetFontDefault(),
+                    ("debt : " + std::to_string(g_PlayerData.debt) + "$").c_str(),
+                    {
+                        (float)GetScreenWidth() - (
+                            (float)std::max(
+                                MeasureText(("money : " + std::to_string(g_PlayerData.cash) + "$").c_str(), 24),
+                                MeasureText(("debt : " + std::to_string(g_PlayerData.debt) + "$").c_str(), 24)
+                            ) + 20
+                        ),
+                        48
+                    },
+                    {0,0},
+                    0,
+                    24,
+                    0.5f,
+                    WHITE
+                );
+                }            
                 break;
             }
+
             case Scenes::S_GAMEOVER:
             {
                 break;

@@ -13,6 +13,8 @@
 
 #include "Input.hpp"
 
+#include "MiniGames.hpp"
+
 Camera2D g_Camera = { 0 };
 
 unsigned int Warning()
@@ -78,6 +80,7 @@ int main()
 
 	Render::Textures::Load();
 	Render::Sounds::Load();
+	Render::_Music::Load();
 
 	Render::PrepUI();
 
@@ -93,10 +96,30 @@ int main()
 
 		Render::RenderUI();
 
+		Minigames::RenderCurrentMinUI();
+		
+		Logger::RenderLogger();
+
+		UpdateMusicStream(Render::_Music::menutheme);
+		UpdateMusicStream(Render::_Music::gameambience);
+
+		if (g_PlayerData.currentscene != Scenes::S_GAME)
+		{
+		    if (!IsMusicStreamPlaying(Render::_Music::menutheme))
+		        PlayMusicStream(Render::_Music::menutheme);
+		
+		    StopMusicStream(Render::_Music::gameambience);
+		}
+		else
+		{
+		    if (!IsMusicStreamPlaying(Render::_Music::gameambience))
+		        PlayMusicStream(Render::_Music::gameambience);
+		
+		    StopMusicStream(Render::_Music::menutheme);
+		}
+
 		if (debug)
 		{
-			Logger::RenderLogger();
-
 			Utils::RenderMousePos();
 		}
 
@@ -109,6 +132,7 @@ int main()
 
 	Render::Textures::Unload();
 	Render::Sounds::Unload();
+	Render::_Music::Unload();
 
 	CloseAudioDevice();
 

@@ -21,6 +21,8 @@ namespace Input
             }
             if (placementbuffer.size() > 1 && IsKeyPressed(KEY_C))
             {
+                Logger::Log("text copied to clipboard");
+
                 std::string result =
                     std::to_string(placementbuffer.at(0).x) + "X\n" +
                     std::to_string(placementbuffer.at(0).y) + "Y\n" +
