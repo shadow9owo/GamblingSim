@@ -54,6 +54,7 @@ class PlayerData
         std::vector<locationstate> locations;
         Scenes currentscene = S_MAINMENU;
         Locations currentlocation = L_INTRO;
+        bool fullscreen = false;
 };
 
 extern PlayerData g_PlayerData;

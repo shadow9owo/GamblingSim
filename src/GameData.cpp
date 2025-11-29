@@ -43,6 +43,8 @@ namespace SAVESYSTEM
             SetValue("loc_" + std::to_string(i) + "_t",
                     std::to_string((int)L.location));
         }
+
+        SetValue("fullscreen", g_PlayerData.fullscreen ? "1" : "0");
     }
 
     void LoadGame()
@@ -82,5 +84,7 @@ namespace SAVESYSTEM
 
             g_PlayerData.locations.push_back(L);
         }
+
+        g_PlayerData.fullscreen = (LoadValue("fullscreen") == "1");
     }
 }

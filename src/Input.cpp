@@ -43,5 +43,11 @@ namespace Input
             Logger::Log("quick loaded!");
             SAVESYSTEM::LoadGame();
         }
+        
+        if (IsKeyPressed(KEY_F11))
+        {
+            ToggleFullscreen();
+            g_PlayerData.fullscreen = !g_PlayerData.fullscreen;
+        }
     }
 }

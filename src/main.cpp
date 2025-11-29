@@ -65,7 +65,14 @@ int main()
 
 	debug = true;
 
-    SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
+    if (g_PlayerData.fullscreen)
+	{
+		SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI | FLAG_FULLSCREEN_MODE);
+	}else
+	{
+		SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
+	}
+	
     InitWindow(1280, 800, " ");
 	SetTargetFPS(24);
 
