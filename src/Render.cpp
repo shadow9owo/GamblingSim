@@ -187,7 +187,7 @@ namespace Render
                     {0,0,(float)Textures::T_Map.width,(float)Textures::T_Map.height},map_rec,{0,0},0,WHITE
                 );
 
-                switch (Utils::InvisibleButton(map_rec,"Map"))
+                switch (Utils::InvisibleButton(map_rec))
                 {
                     case Utils::Clicked:
                     {
@@ -217,7 +217,7 @@ namespace Render
 
                 Rectangle Kult = {21.000000,7.000000,29.000000,23.000000};
 
-                switch (Utils::InvisibleButton(Kult,""))
+                switch (Utils::InvisibleButton(Kult))
                 {
                     case Utils::Clicked:
                     {
@@ -238,7 +238,7 @@ namespace Render
 
                 Rectangle Factory = {134.000000,618.000000,5.000000,31.000000};
 
-                switch (Utils::InvisibleButton(Factory,""))
+                switch (Utils::InvisibleButton(Factory))
                 {
                     case Utils::Clicked:
                     {
@@ -259,7 +259,7 @@ namespace Render
 
                 Rectangle GamblingDen = {984.000000,204.000000,20.000000,13.000000};
 
-                switch (Utils::InvisibleButton(GamblingDen,""))
+                switch (Utils::InvisibleButton(GamblingDen))
                 {
                     case Utils::Clicked:
                     {
@@ -280,7 +280,7 @@ namespace Render
 
                 Rectangle AbandonedHouse = {469.000000,418.000000,22.000000,19.000000};
 
-                switch (Utils::InvisibleButton(AbandonedHouse,""))
+                switch (Utils::InvisibleButton(AbandonedHouse))
                 {
                     case Utils::Clicked:
                     {
@@ -301,7 +301,7 @@ namespace Render
 
                 Rectangle Bar = {842.000000,599.000000,26.000000,12.000000};
 
-                switch (Utils::InvisibleButton(Bar,""))
+                switch (Utils::InvisibleButton(Bar))
                 {
                     case Utils::Clicked:
                     {
@@ -322,7 +322,7 @@ namespace Render
 
                 Rectangle Alley = {1138.000000,673.000000,24.000000,17.000000};
 
-                switch (Utils::InvisibleButton(Alley,""))
+                switch (Utils::InvisibleButton(Alley))
                 {
                     case Utils::Clicked:
                     {
@@ -354,6 +354,8 @@ namespace Render
 
     void RenderCurrentLocation()
     {
+        Vector2 mp = GetMousePosition();
+
         switch (g_PlayerData.currentlocation)
         {
             case L_INTRO:
@@ -391,10 +393,64 @@ namespace Render
                 DrawTexturePro(Textures::T_alley,{0,0,(float)Textures::T_alley.width,(float)Textures::T_alley.height},{pos.x,pos.y,(float)GetScreenWidth(),(float)GetScreenHeight()},{0,0},0,WHITE);
                 break;
             }
-            case L_BAR:
+            case L_BAR: //home
             {
-                auto pos = GetScreenToWorld2D({0,0},g_Camera);
-                DrawTexturePro(Textures::T_Home,{0,0,(float)Textures::T_Home.width,(float)Textures::T_Home.height},{pos.x,pos.y,(float)GetScreenWidth(),(float)GetScreenHeight()},{0,0},0,WHITE);
+                auto pos = GetScreenToWorld2D({0,0}, g_Camera);
+                DrawTexturePro(
+                    Textures::T_Home,
+                    {0,0,(float)Textures::T_Home.width,(float)Textures::T_Home.height},
+                    {pos.x,pos.y,(float)GetScreenWidth(),(float)GetScreenHeight()},
+                    {0,0},
+                    0,
+                    WHITE
+                );
+            
+                Rectangle entrance = {
+                    GetScreenToWorld2D({530,331}, g_Camera).x,
+                    GetScreenToWorld2D({530,331}, g_Camera).y,
+                    134.0f,
+                    246.0f
+                };
+                
+                auto a = GetScreenToWorld2D(mp,g_Camera);
+
+                switch (Utils::InvisibleButton(entrance,a))
+                {
+                    case Utils::Clicked:
+                    {
+                        if (g_PlayerData.debt <= 0)
+                        {
+                            g_PlayerData = {};
+                            SAVESYSTEM::SaveGame();
+                            g_PlayerData.currentscene = S_CREDITS;    
+                        }
+                        else 
+                        {
+                            Logger::Log("you cant enter your home while still being in debt your wife would kill you.");
+                        }
+                        break;
+                    }
+                    case Utils::Hovering:
+                    {
+                        DrawRectangle(a.x, a.y,
+                                      MeasureText("enter home",24), 24, YELLOW);
+                        DrawTextPro(
+                            GetFontDefault(),
+                            "enter home",
+                            {a.x,a.y},
+                            {0,0},
+                            0,
+                            24,
+                            0.5f,
+                            BLACK
+                        );
+                        break;
+                    }
+                
+                    default:
+                        break;
+                }
+            
                 break;
             }
             case L_DISCORD_MOD_EASTEREGG:

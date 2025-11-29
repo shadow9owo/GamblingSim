@@ -2,6 +2,7 @@
 #include "raylib.h"
 #include <string>
 #include <vector>
+#include "raymath.h"
 
 namespace Utils
 {
@@ -25,11 +26,14 @@ namespace Utils
         return { (float)maxX - minX, (float)maxY - minY };
     }
 
-    ButtonReturns InvisibleButton(Rectangle bounds,std::string hovertext)
+    ButtonReturns InvisibleButton(Rectangle bounds,Vector2 mousepoint)
     {
-        Vector2 mousePoint = GetMousePosition();
+        if (Vector2Equals(mousepoint,{0,0}))
+        {
+            mousepoint = GetMousePosition();
+        }
 
-        if (CheckCollisionPointRec(mousePoint, bounds))
+        if (CheckCollisionPointRec(mousepoint, bounds))
         {
             if (IsMouseButtonPressed(0))
             {

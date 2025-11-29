@@ -17,7 +17,7 @@ namespace Utils
 
     extern float Clamp(float value,float min,float max);
 
-    extern ButtonReturns InvisibleButton(Rectangle bounds,std::string hovertext);
+    extern ButtonReturns InvisibleButton(Rectangle bounds,Vector2 mousepoint = {0,0});
 
     extern void RenderMousePos();
 }
