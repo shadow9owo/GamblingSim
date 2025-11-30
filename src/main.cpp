@@ -63,8 +63,6 @@ int main()
 		g_PlayerData.sawWarning = true;
 	}
 
-	debug = true;
-
     if (g_PlayerData.fullscreen)
 	{
 		SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI | FLAG_FULLSCREEN_MODE);
