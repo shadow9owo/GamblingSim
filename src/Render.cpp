@@ -678,6 +678,7 @@ namespace Render
                             if (g_PlayerData.debt <= 0)
                             {
                                 g_PlayerData = {};
+                                g_PlayerData.sawWarning = true;
                                 SAVESYSTEM::SaveGame();
                                 g_PlayerData.currentscene = S_CREDITS;    
                             }
@@ -714,8 +715,9 @@ namespace Render
                         {
                             if (g_PlayerData.cash > 0)
                             {
-                                g_PlayerData.debt = g_PlayerData.debt - g_PlayerData.cash;
-                                g_PlayerData.cash = 0;
+                                int pay = g_PlayerData.cash > g_PlayerData.debt ? g_PlayerData.debt : g_PlayerData.cash;
+                                g_PlayerData.debt -= pay;
+                                g_PlayerData.cash -= pay;
                             }
                             break;
                         }
