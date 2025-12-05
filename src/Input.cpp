@@ -46,7 +46,7 @@ namespace Input
         
         if (IsKeyPressed(KEY_F11))
         {
-            ToggleFullscreen();
+            Logger::Log("fullscreen was disabled as a quick fix.");
             g_PlayerData.fullscreen = !g_PlayerData.fullscreen;
         }
     }
