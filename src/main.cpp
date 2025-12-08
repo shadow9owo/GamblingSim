@@ -68,7 +68,7 @@ int main()
 		//SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI | FLAG_FULLSCREEN_MODE);
 	}else
 	{
-		SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
+		SetConfigFlags(FLAG_VSYNC_HINT);
 	}
 	
     InitWindow(1280, 800, " ");
